@@ -5,6 +5,7 @@
     user-select:none;
 }
 body{
+    margin-top:10%;
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
     justify-content: center;
@@ -12,10 +13,26 @@ body{
 
 .tela{
     position: relative;
-    width:1200px;
+    width:70%;
     height:500px;
     border:1px solid #ccc;
     overflow: hidden;
+    background: rgb(0,74,219);
+    background: linear-gradient(180deg, rgba(0,74,219,1) 0%, rgba(217,241,247,1) 100%);
+    border-bottom: 18px solid green;
+    /* 
+    IMAGE PISO***
+    border-bottom: 18px solid transparent;
+    padding-bottom: 10px;
+    border-image: url(../styleSheet/faze1.png) 40% round; */
+}
+
+.ponto{
+    font-size:16px;
+    color:yellow;
+    padding:10px 20px;
+    display:inline-block;
+    background-color:#000; 
 }
 
 .TelaGameOver{
@@ -56,6 +73,25 @@ button.Start{
 button.Start:hover{
     box-shadow:0 0 5px 5px rgba(203, 0, 0,0.5);
 }
+
+.nuvem1{
+    position: absolute;
+    top:-10px;
+    right:0;
+    width:500px;
+    height:280px;
+    animation: nuvem 8s infinite linear;
+}
+
+@keyframes nuvem{
+    from{
+        right:-80px;
+    }
+    to{
+        right:100%;
+    }
+}
+
 
 .espinho{
     width:50px;
@@ -101,4 +137,11 @@ button.Start:hover{
         left:20px;
         bottom:0px;
     }
+}
+
+.inimigo{
+    position: absolute;
+    right:80px;
+    top: 80px;
+    width:200px;
 }

@@ -37,7 +37,7 @@ function gameOver(){
     tela_Fim_De_Jogo.style.display = 'flex';
     },1000);
 
-    // ButtonStart.addEventListener('click',()=>{ window.location.reload () });
+    ButtonStart.addEventListener('click',()=>{ window.location.reload () });
     
 }
 
