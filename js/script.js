@@ -1,71 +1,131 @@
-//tela do game
-const tela_Inicio_De_Jogo = document.querySelector('.tela');
-//tela game over
-const tela_Fim_De_Jogo = document.querySelector('.TelaGameOver');
+// ==============================
+// ELEMENTOS
+// ==============================
+const tela = document.querySelector('.tela');
+const telaGameOver = document.querySelector('.TelaGameOver');
+const btnStart = document.querySelector('.Start');
 
-//botão de restart
-const ButtonStart = document.querySelector('.Start');
-
-//player
 const Sonic = document.querySelector('.player');
-//obstaculo
 const espinho = document.querySelector('.espinho');
 
-//pontuação atual do jogador
-var ponto = document.querySelector('.ponto');
+const ponto = document.querySelector('.ponto');
+const pontuacaoFinal = document.querySelector('.pontuacao');
 
-//pontuação final do jogador
-var pontuacaoFinal = document.querySelector('.pontuacao');
+// ==============================
+// CONFIG
+// ==============================
+let pontos = 0;
+let gameRodando = true;
+let debug = true;
 
-//evento de pulo do personagem
-const jump = () =>{
-    Sonic.classList.add('jump');
-    //clear Jump
-    setTimeout(()=>{
-        Sonic.classList.remove('jump');
-    },500);
+// ==============================
+// DEBUG HITBOX
+// ==============================
+const debugSonic = document.createElement('div');
+const debugEspinho = document.createElement('div');
+
+debugSonic.classList.add('debug-box');
+debugEspinho.classList.add('debug-box');
+
+document.body.appendChild(debugSonic);
+document.body.appendChild(debugEspinho);
+
+// ==============================
+// FUNÇÃO DE PULO (AGORA EXISTE)
+// ==============================
+function jump() {
+    if (!Sonic.classList.contains('jump')) {
+        Sonic.classList.add('jump');
+
+        setTimeout(() => {
+            Sonic.classList.remove('jump');
+        }, 500);
+    }
 }
 
-function gameOver(){
-//troca img do sonic quando levar dano 
+// ==============================
+// INPUT (CLICK + TECLADO)
+// ==============================
+document.addEventListener('click', () => {
+    jump();
+});
+
+document.addEventListener('keydown', (e) => {
+
+    // suporta SPACE em todos navegadores
+    if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+        jump();
+    }
+});
+
+// ==============================
+// GAME OVER
+// ==============================
+function gameOver() {
+    gameRodando = false;
+
     Sonic.src = 'styleSheet/sonic-2.gif';
 
-//mostrar pontos
-    pontuacaoFinal.innerHTML = ponto.innerHTML;
-//tela game over
-    setTimeout(()=>{
-    tela_Fim_De_Jogo.style.display = 'flex';
-    },1000);
+    pontuacaoFinal.innerHTML = pontos;
 
-    ButtonStart.addEventListener('click',()=>{ window.location.reload () });
-    
+    setTimeout(() => {
+        telaGameOver.style.display = 'flex';
+    }, 500);
+
+    clearInterval(loop);
 }
 
-//renderisação e validação do game
+btnStart.addEventListener('click', () => {
+    window.location.reload();
+});
 
-    const loop = setInterval(() => {
-    
-        const posicaoEspinho = espinho.offsetLeft;
-        const posicaoSonic = +window.getComputedStyle(Sonic).bottom.replace('px', ' ');
-           
-            //validação de colisão
-            if(posicaoEspinho < 40 && posicaoEspinho > 0 && posicaoSonic < 50){
+// ==============================
+// LOOP PRINCIPAL
+// ==============================
+const loop = setInterval(() => {
 
-                espinho.style.animation = 'none';
-                espinho.style.left = `${posicaoEspinho}px`;
+    if (!gameRodando) return;
 
-                Sonic.style.animation = 'none';
-                Sonic.style.bottom = `${posicaoSonic}px`;
-                Sonic.style.bottom = `10px`;
+    const espinhoRect = espinho.getBoundingClientRect();
+    const sonicRect = Sonic.getBoundingClientRect();
 
-                gameOver();
+    const colisao =
+        espinhoRect.left < sonicRect.right &&
+        espinhoRect.right > sonicRect.left &&
+        espinhoRect.top < sonicRect.bottom &&
+        espinhoRect.bottom > sonicRect.top;
 
-            }else{
-                ponto.innerHTML++;
-                clearInterval();
-            }
-        
-    }, 10);
+    if (colisao) {
 
-    
-document.addEventListener('click', jump);
+        espinho.style.animation = 'none';
+        espinho.style.left = `${espinho.offsetLeft}px`;
+
+        Sonic.style.animation = 'none';
+        Sonic.style.bottom = window.getComputedStyle(Sonic).bottom;
+
+        gameOver();
+    } else {
+        pontos++;
+        ponto.innerHTML = pontos;
+    }
+
+    // ==========================
+    // DEBUG VISUAL
+    // ==========================
+    if (debug) {
+        const s = sonicRect;
+        const e = espinhoRect;
+
+        debugSonic.style.left = s.left + 'px';
+        debugSonic.style.top = s.top + 'px';
+        debugSonic.style.width = s.width + 'px';
+        debugSonic.style.height = s.height + 'px';
+
+        debugEspinho.style.left = e.left + 'px';
+        debugEspinho.style.top = e.top + 'px';
+        debugEspinho.style.width = e.width + 'px';
+        debugEspinho.style.height = e.height + 'px';
+    }
+
+}, 10);

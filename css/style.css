@@ -11,6 +11,11 @@ body{
     justify-content: center;
 }
 
+/*trava o scroll global da página*/
+body {
+    overflow: hidden;
+}
+
 .tela{
     position: relative;
     width:70%;
@@ -144,4 +149,27 @@ button.Start:hover{
     right:80px;
     top: 80px;
     width:200px;
+}
+
+.debug-box{
+    position: absolute;
+    border: 2px solid red;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.player.jump{
+    animation: jump 500ms ease;
+}
+
+@keyframes jump {
+    0%{
+        bottom: 0px;
+    }
+    50%{
+        bottom: 120px;
+    }
+    100%{
+        bottom: 0px;
+    }
 }
