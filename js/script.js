@@ -1,6 +1,3 @@
-// ==============================
-// ELEMENTOS
-// ==============================
 const tela = document.querySelector('.tela');
 const telaGameOver = document.querySelector('.TelaGameOver');
 const btnStart = document.querySelector('.Start');
@@ -11,16 +8,12 @@ const espinho = document.querySelector('.espinho');
 const ponto = document.querySelector('.ponto');
 const pontuacaoFinal = document.querySelector('.pontuacao');
 
-// ==============================
 // CONFIG
-// ==============================
 let pontos = 0;
 let gameRodando = true;
-let debug = true;
+let debug = false;
 
-// ==============================
-// DEBUG HITBOX
-// ==============================
+// HITBOX
 const debugSonic = document.createElement('div');
 const debugEspinho = document.createElement('div');
 
@@ -30,9 +23,7 @@ debugEspinho.classList.add('debug-box');
 document.body.appendChild(debugSonic);
 document.body.appendChild(debugEspinho);
 
-// ==============================
 // FUNÇÃO DE PULO (AGORA EXISTE)
-// ==============================
 function jump() {
     if (!Sonic.classList.contains('jump')) {
         Sonic.classList.add('jump');
@@ -43,9 +34,7 @@ function jump() {
     }
 }
 
-// ==============================
 // INPUT (CLICK + TECLADO)
-// ==============================
 document.addEventListener('click', () => {
     jump();
 });
@@ -59,9 +48,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// ==============================
 // GAME OVER
-// ==============================
 function gameOver() {
     gameRodando = false;
 
@@ -80,9 +67,7 @@ btnStart.addEventListener('click', () => {
     window.location.reload();
 });
 
-// ==============================
-// LOOP PRINCIPAL
-// ==============================
+// GAME LOOP
 const loop = setInterval(() => {
 
     if (!gameRodando) return;
@@ -110,9 +95,7 @@ const loop = setInterval(() => {
         ponto.innerHTML = pontos;
     }
 
-    // ==========================
     // DEBUG VISUAL
-    // ==========================
     if (debug) {
         const s = sonicRect;
         const e = espinhoRect;
